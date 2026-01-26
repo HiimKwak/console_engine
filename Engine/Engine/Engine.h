@@ -24,10 +24,16 @@ namespace  Wanted
 		bool GetKeyDown(int keyCode); // called when key pressed newly
 		bool GetKeyUp(int keyCode); // called when pressed key cancelled 
 		bool GetKey(int keyCode); // called when key is being pressed
+
+		// add new level
+		void SetNewLevel(class Level* newLevel);
 		
 	private:
 		// process input
 		void ProcessInput();
+
+		// begin game play
+		void BeginPlay();
 
 		// update
 		void Tick(float deltaTime);
@@ -40,8 +46,7 @@ namespace  Wanted
 		bool isQuit = false;
 		// key states
 		KeyState keyStates[255] = { };
+		// main level
+		class Level* mainLevel = nullptr;
 	};
 }
-
-
-

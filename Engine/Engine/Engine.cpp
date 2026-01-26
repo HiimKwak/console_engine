@@ -1,6 +1,8 @@
-#include "Engine.h"
 #include <iostream>
 #include <Windows.h>
+
+#include "Engine.h"
+#include "Level/Level.h"
 
 namespace Wanted
 {
@@ -50,8 +52,10 @@ namespace Wanted
 				ProcessInput();
 
 				// processing one frame
+				BeginPlay();
 				Tick(deltaTime);
 				Draw();
+
 
 				// update previous time
 				previousTime = currentTime;
@@ -86,6 +90,18 @@ namespace Wanted
 	{
 		return keyStates[keyCode].isKeyDown;
 	}
+	void Engine::SetNewLevel(Level* newLevel)
+	{
+		// todo: temporary, must not delete level when switching levels in actual game
+		if (mainLevel)
+		{
+			delete mainLevel;
+			mainLevel = nullptr;
+		}
+
+		// level setting
+		mainLevel = newLevel;
+	}
 	void Engine::ProcessInput()
 	{
 		// read each key input
@@ -96,19 +112,45 @@ namespace Wanted
 
 		}
 	}
+	void Engine::BeginPlay()
+	{
+		if (!mainLevel)
+		{
+			std::cout << "No level is set as main level!" << std::endl;
+			return;
+		}
+		mainLevel->BeginPlay();
+	}
 	void Engine::Tick(float deltaTime)
 	{
-		std::cout
-			<< "DeltaTime: " << deltaTime 
-			<< ", FPS: " << (1.0f / deltaTime) << std::endl;
+		//std::cout
+		//	<< "DeltaTime: " << deltaTime 
+		//	<< ", FPS: " << (1.0f / deltaTime) << std::endl;
 
-		// quit when ESC is pressed
-		if (GetKeyDown(VK_ESCAPE))
+		//// quit when ESC is pressed
+		//if (GetKeyDown(VK_ESCAPE))
+		//{
+		//	Quit();
+		//}
+
+		if (!mainLevel)
 		{
-			Quit();
+			std::cout << "No level is set as main level!" << std::endl;
+			return;
 		}
+
+		// 
+		mainLevel->Tick(deltaTime);
 	}
 	void Engine::Draw()
 	{
+		if (!mainLevel)
+		{
+			std::cout << "No level is set as main level!" << std::endl;
+			return;
+		}
+
+		// 
+		mainLevel->Draw();
 	}
 }
