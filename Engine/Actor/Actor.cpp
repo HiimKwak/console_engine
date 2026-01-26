@@ -13,6 +13,8 @@ namespace Wanted
 
 	void Actor::BeginPlay()
 	{
+		// toggle after receiving begin play call
+		hasPlayBegun = true;
 	}
 	void Actor::Tick(float deltaTime)
 	{

@@ -22,9 +22,15 @@ namespace Wanted
 
 	void Level::BeginPlay()
 	{
+		// shoule be able to call BeginPlay only once per actor
+		// because actors can be generated dynamically during gameplay
 		for (Actor* actor : actors)
 		{
-			// todo: skip actor if called
+			if (actor->HasPlayBegun())
+			{
+				continue;
+			}
+
 			actor->BeginPlay();
 		}
 	}
@@ -41,5 +47,10 @@ namespace Wanted
 		{
 			actor->Draw();
 		}
+	}
+	void Level::AddNewActor(Actor* newActor)
+	{
+		// todo: 프레임 처리 고려해서 추가 작업 필요
+		actors.emplace_back(newActor);
 	}
 }

@@ -11,6 +11,11 @@ namespace Wanted
 	}
 	Engine::~Engine()
 	{
+		if (mainLevel)
+		{
+			delete mainLevel;
+			mainLevel = nullptr;
+		}
 	}
 	void Engine::Run()
 	{
@@ -127,11 +132,11 @@ namespace Wanted
 		//	<< "DeltaTime: " << deltaTime 
 		//	<< ", FPS: " << (1.0f / deltaTime) << std::endl;
 
-		//// quit when ESC is pressed
-		//if (GetKeyDown(VK_ESCAPE))
-		//{
-		//	Quit();
-		//}
+		// quit when ESC is pressed
+		if (GetKeyDown(VK_ESCAPE))
+		{
+			Quit();
+		}
 
 		if (!mainLevel)
 		{
