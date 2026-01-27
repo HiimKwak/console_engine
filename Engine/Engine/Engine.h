@@ -4,16 +4,10 @@
 
 namespace  Wanted
 {
+	class Input;
+
 	class WANTED_API Engine
 	{
-		struct KeyState // 구조체는 데이터에, 클래스는 기동에 초점
-		{
-			// key pressed or not on this frame
-			bool isKeyDown = false;
-			// key pressed or not on previous frame
-			bool wasKeyDown = false;
-		};
-
 	public:
 		Engine();
 		~Engine();
@@ -22,18 +16,12 @@ namespace  Wanted
 		void Run();
 		void Quit();
 
-		// input checker
-		bool GetKeyDown(int keyCode); // called when key pressed newly
-		bool GetKeyUp(int keyCode); // called when pressed key cancelled 
-		bool GetKey(int keyCode); // called when key is being pressed
-
 		// add new level
 		void SetNewLevel(class Level* newLevel);
 
-	private:
-		// process input
-		void ProcessInput();
+		static Engine& Get();
 
+	private:
 		// begin game play
 		void BeginPlay();
 
@@ -46,9 +34,11 @@ namespace  Wanted
 	private:
 		// quit flag
 		bool isQuit = false;
-		// key states
-		KeyState keyStates[255] = { };
+		// input manager
+		Input* input = nullptr;
 		// main level
 		class Level* mainLevel = nullptr;
+
+		static Engine* instance;
 	};
 }

@@ -3,11 +3,17 @@
 
 #include "Engine.h"
 #include "Level/Level.h"
+#include "Core/Input.h"
 
 namespace Wanted
 {
+	Engine* Engine::instance = nullptr;
 	Engine::Engine()
 	{
+		instance = this;
+
+		// input manager »ý¼º
+		input = new Input();
 	}
 	Engine::~Engine()
 	{
@@ -15,6 +21,11 @@ namespace Wanted
 		{
 			delete mainLevel;
 			mainLevel = nullptr;
+		}
+		if (input)
+		{
+			delete input;
+			input = nullptr;
 		}
 	}
 	void Engine::Run()
@@ -54,7 +65,7 @@ namespace Wanted
 			// frame limiting
 			if (deltaTime >= oneFrameTime)
 			{
-				ProcessInput();
+				input->ProcessInput();
 
 				// processing one frame
 				BeginPlay();
@@ -65,14 +76,7 @@ namespace Wanted
 				// update previous time
 				previousTime = currentTime;
 
-				// update key states
-				// read each key input
-				// must use OS specific API
-				for (int ix = 0; ix < 255; ++ix)
-				{
-					keyStates[ix].wasKeyDown = keyStates[ix].isKeyDown;
-
-				}
+				input->SavePreviousInputStates();
 			}
 
 		}
@@ -82,18 +86,6 @@ namespace Wanted
 	void Engine::Quit()
 	{
 		isQuit = true;
-	}
-	bool Engine::GetKeyDown(int keyCode)
-	{
-		return keyStates[keyCode].isKeyDown && !keyStates[keyCode].wasKeyDown;
-	}
-	bool Engine::GetKeyUp(int keyCode)
-	{
-		return keyStates[keyCode].wasKeyDown && !keyStates[keyCode].isKeyDown;
-	}
-	bool Engine::GetKey(int keyCode)
-	{
-		return keyStates[keyCode].isKeyDown;
 	}
 	void Engine::SetNewLevel(Level* newLevel)
 	{
@@ -107,16 +99,17 @@ namespace Wanted
 		// level setting
 		mainLevel = newLevel;
 	}
-	void Engine::ProcessInput()
-	{
-		// read each key input
-		// must use OS specific API
-		for (int ix = 0; ix < 255; ++ix)
-		{
-			keyStates[ix].isKeyDown = (GetAsyncKeyState(ix) & 0x8000) > 0 ? true : false;
 
+	Engine& Engine::Get()
+	{
+		if (!instance)
+		{
+			std::cout << "Error: Engine::Get(). instance is null\n";
+			__debugbreak();
 		}
+		return *instance;
 	}
+
 	void Engine::BeginPlay()
 	{
 		if (!mainLevel)
@@ -131,12 +124,6 @@ namespace Wanted
 		//std::cout
 		//	<< "DeltaTime: " << deltaTime 
 		//	<< ", FPS: " << (1.0f / deltaTime) << std::endl;
-
-		// quit when ESC is pressed
-		if (GetKeyDown(VK_ESCAPE))
-		{
-			Quit();
-		}
 
 		if (!mainLevel)
 		{

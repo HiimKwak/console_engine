@@ -3,5 +3,9 @@
 
 TestLevel::TestLevel()
 {
+	// if (Wanted::Input::Get().GetKeyDown('Q'))
+	// {
+	// 
+	// }
 	AddNewActor(new TestActor());
 }
