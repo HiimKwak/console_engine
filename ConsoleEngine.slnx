@@ -2,5 +2,9 @@
   <Configurations>
     <Platform Name="x64" />
   </Configurations>
+  <Folder Name="/솔루션 항목/" />
   <Project Path="Engine/Engine.vcxproj" Id="1b0dcab9-14f9-4708-ae3f-317035cceb3a" />
+  <Project Path="Game/Game.vcxproj" Id="d12040d5-d395-472f-ae0c-629254c96c97">
+    <BuildDependency Project="Engine/Engine.vcxproj" />
+  </Project>
 </Solution>
