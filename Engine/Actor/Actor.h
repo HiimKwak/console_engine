@@ -1,11 +1,14 @@
 #pragma once
 
-#include "Common/Common.h"
+#include "Common/RTTI.h"
 
 namespace Wanted
 {
-	class WANTED_API Actor // dll 바깥에서 접근가능하게 열어주는 키워드
+	class WANTED_API Actor : public RTTI // dll 바깥에서 접근가능하게 열어주는 키워드
 	{
+		// RTTI 코드 추가
+		RTTI_DECLARATIONS(Actor, RTTI)
+
 	public:
 		Actor();
 		virtual ~Actor();

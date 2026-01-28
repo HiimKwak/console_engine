@@ -1,4 +1,6 @@
 #pragma once
+#pragma warning(disable: 4251)
+#pragma warning(disable: 4172)
 
 //#define ENGINE_BUILD_DLL 1
 

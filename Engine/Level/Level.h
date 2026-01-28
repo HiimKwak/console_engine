@@ -1,17 +1,18 @@
 #pragma once
-#pragma warning(disable: 4251)
 
 // STL(Standard Template Library)
 #include <vector> // 동적 배열
-#include "Common/Common.h"
+#include "Common/RTTI.h"
 
 namespace Wanted
 {
 	class Actor;
 
 	// 목표: 레벨에 있는 모든 액터 관리
-	class WANTED_API Level
+	class WANTED_API Level : public RTTI
 	{
+		RTTI_DECLARATIONS(Level, RTTI)
+
 	public:
 		Level();
 		virtual ~Level();
