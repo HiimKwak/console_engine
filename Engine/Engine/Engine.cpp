@@ -10,10 +10,14 @@ namespace Wanted
 	Engine* Engine::instance = nullptr;
 	Engine::Engine()
 	{
+		// 전역변수 초기화
 		instance = this;
 
 		// input manager 생성
 		input = new Input();
+
+		// 설정파일 로드
+		LoadSettings();
 	}
 	Engine::~Engine()
 	{
@@ -47,8 +51,9 @@ namespace Wanted
 		previousTime = currentTime;
 
 		// target frame rate
-		float targetFrameRate = 120.0f;
-		float oneFrameTime = 1.0f / targetFrameRate;
+		//float targetFrameRate = 120.0f;
+		settings.frameRate = settings.frameRate == 0.0f ? 60.0f : settings.frameRate;
+		float oneFrameTime = 1.0f / settings.frameRate;
 
 		while (!isQuit)
 		{
@@ -108,6 +113,28 @@ namespace Wanted
 			__debugbreak();
 		}
 		return *instance;
+	}
+
+	void Engine::LoadSettings()
+	{
+		FILE* file = nullptr;
+
+		fopen_s(&file, "../Config/Settings.txt", "rt");
+
+		if (!file)
+		{
+			std::cout << "Failed to open engine settings file.\n";
+			__debugbreak();
+			return;
+		}
+
+		char buffer[2048] = {};
+
+		size_t readSize = fread(buffer, sizeof(char), 2048, file);
+
+		sscanf_s(buffer, "frameRate = %f", &settings.frameRate);
+
+		fclose(file);
 	}
 
 	void Engine::BeginPlay()

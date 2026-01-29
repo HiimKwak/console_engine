@@ -8,6 +8,11 @@ namespace  Wanted
 
 	class WANTED_API Engine
 	{
+		struct EngineSettings
+		{
+			float frameRate = 0.0f;
+		};
+
 	public:
 		Engine();
 		~Engine();
@@ -22,6 +27,8 @@ namespace  Wanted
 		static Engine& Get();
 
 	private:
+		// load setting file
+		void LoadSettings();
 		// begin game play
 		void BeginPlay();
 
@@ -34,6 +41,8 @@ namespace  Wanted
 	private:
 		// quit flag
 		bool isQuit = false;
+		// engine settings
+		EngineSettings settings;
 		// input manager
 		Input* input = nullptr;
 		// main level
