@@ -25,8 +25,13 @@ namespace Wanted
 		// add actor to level
 		void AddNewActor(Actor* newActor);
 
+		void ProcessAddAndDestoryActors();
+
 	protected:
 		std::vector<Actor*> actors;
+
+		// 실행 중에 추가 요청된 액터 배열
+		std::vector<Actor*> addRequestedActors;
 	};
 }
 

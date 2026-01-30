@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Windows.h> // 윈도우의 콘솔 API. 다른 운영체제 API는 헤더가 다르다
 
+#include "Util/Util.h"
 #include "Actor.h"
 
 namespace Wanted
@@ -24,13 +25,7 @@ namespace Wanted
 	void Actor::Draw()
 	{
 		// 액터의 현재 좌표로 콘솔 좌표 위치 이동
-		COORD coord = {};
-		coord.X = static_cast<short>(position.x);
-		coord.Y = static_cast<short>(position.y);
-		SetConsoleCursorPosition(
-			GetStdHandle(STD_OUTPUT_HANDLE),
-			coord
-		);
+		Util::SetConsolePosition(position);
 
 		// 이동한 좌표에서 글자 그리기
 		std::cout << image;
@@ -38,15 +33,8 @@ namespace Wanted
 
 	void Actor::SetPosition(const Vector2& newPosition)
 	{
-		// 액터의 좌표로 콘솔 좌표 위치 이동
 		// 액터의 현재 좌표로 콘솔 좌표 위치 이동
-		COORD coord = {};
-		coord.X = static_cast<short>(position.x);
-		coord.Y = static_cast<short>(position.y);
-		SetConsoleCursorPosition(
-			GetStdHandle(STD_OUTPUT_HANDLE),
-			coord
-		);
+		Util::SetConsolePosition(position);
 
 		// 해당 위치의 글자 값 지우기 (빈칸 그리기)
 		std::cout << ' ';
