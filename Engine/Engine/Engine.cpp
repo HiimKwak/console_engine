@@ -94,10 +94,9 @@ namespace Wanted
 				}
 			}
 		}
-		// todo: cleanup
-		std::cout << "Engine has been shutdown..." << std::endl;
 
-		Util::TurnOnCursor();
+		// Á¤¸®
+		Shutdown();
 	}
 	void Engine::Quit()
 	{

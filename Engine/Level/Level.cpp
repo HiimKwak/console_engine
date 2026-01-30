@@ -22,8 +22,8 @@ namespace Wanted
 
 	void Level::BeginPlay()
 	{
-		// shoule be able to call BeginPlay only once per actor
-		// because actors can be generated dynamically during gameplay
+		// BeginPlay must be invoked only once per actor,
+		// as actors may be spawned dynamically during gameplay.
 		for (Actor* actor : actors)
 		{
 			if (actor->HasPlayBegun())
@@ -50,9 +50,11 @@ namespace Wanted
 	}
 	void Level::AddNewActor(Actor* newActor)
 	{
-		// 프레임 처리 고려해서 추가 작업 필요
-		//actors.emplace_back(newActor);
+		// 나중에 추가를 위해 임시 배열에 저장
 		addRequestedActors.emplace_back(newActor);
+
+		// 오너십 설정
+		newActor->SetOwner(this);
 	}
 
 	void Level::ProcessAddAndDestoryActors()

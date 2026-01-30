@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common/Common.h"
+#include "Util/Util.h"
 
 namespace  Wanted
 {
@@ -27,6 +28,14 @@ namespace  Wanted
 		static Engine& Get();
 
 	private:
+		// 정리 함수
+		void Shutdown()
+		{
+			std::cout << "Engine has been shutdown..." << std::endl;
+
+			Util::TurnOnCursor();
+		}
+
 		// load setting file
 		void LoadSettings();
 		// begin game play
