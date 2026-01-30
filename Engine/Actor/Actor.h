@@ -48,6 +48,8 @@ namespace Wanted
 			return destroyRequested;
 		}
 
+		inline int GetSortingOrder() const { return sortingOrder; }
+
 	protected:
 		// check whether begin play has been called
 		bool hasPlayBegun = false;
@@ -65,6 +67,9 @@ namespace Wanted
 
 		// Ownership
 		Level* owner = nullptr;
+
+		// 그리기 우선 순위(z-order/z-index)
+		int sortingOrder = 0;
 
 	private:
 		// position

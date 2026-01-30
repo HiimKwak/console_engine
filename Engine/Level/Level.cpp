@@ -45,7 +45,34 @@ namespace Wanted
 	{
 		for (Actor* actor : actors)
 		{
-			actor->Draw();
+			// 같은 위치에 다른 액터가 존재하는지 확인
+			Actor* search = nullptr;
+			for (Actor* otherActor : actors)
+			{
+				// 같은 액터면 패스
+				if (actor == otherActor)
+				{
+					continue;
+				}
+				// 위치비교
+				if (actor->GetPosition() == otherActor->GetPosition())
+				{
+					search = otherActor;
+					break;
+				}
+			}
+
+			if (!search)
+			{
+				actor->Draw();
+				continue;
+			}
+			if (search && (actor->GetSortingOrder() > search->GetSortingOrder()))
+			{
+				actor->Draw();
+			}
+
+
 		}
 	}
 	void Level::AddNewActor(Actor* newActor)

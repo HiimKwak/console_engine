@@ -12,6 +12,7 @@ using namespace Wanted;
 Player::Player()
 	: super('P', Vector2(5, 5), Color::Red) // Actor()가 정답이나 RTTI Macro로 사용가능
 {
+	sortingOrder = 10;
 }
 
 void Player::BeginPlay()
@@ -38,7 +39,7 @@ void Player::Tick(float deltaTime)
 		// 박스 생성
 		if (owner)
 		{
-			owner->AddNewActor(new Box(GetPosition()));
+			owner->AddNewActor(new Box(GetPosition())); // 객체를 바로 생성해 넘겨주기보단 타입만 넘겨주고 템플릿으로 내부에서 생성
 		}
 	}
 
