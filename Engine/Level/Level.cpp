@@ -57,22 +57,20 @@ namespace Wanted
 				// 위치비교
 				if (actor->GetPosition() == otherActor->GetPosition())
 				{
-					search = otherActor;
-					break;
+					// 정렬 순서 비교.
+					if (actor->GetSortingOrder() < otherActor->GetSortingOrder())
+					{
+						search = otherActor;
+						break;
+					}
 				}
 			}
 
-			if (!search)
+			if (search)
 			{
-				actor->Draw();
 				continue;
 			}
-			if (search && (actor->GetSortingOrder() > search->GetSortingOrder()))
-			{
-				actor->Draw();
-			}
-
-
+			actor->Draw();
 		}
 	}
 	void Level::AddNewActor(Actor* newActor)
