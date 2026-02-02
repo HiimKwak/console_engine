@@ -1,12 +1,14 @@
 #pragma once
 #include "Actor/Actor.h"
 
-class Player : public Wanted::Actor
+using namespace Wanted;
+
+class Player : public Actor
 {
 	RTTI_DECLARATIONS(Player, Actor)
 
 public:
-	Player();
+	Player(const Vector2& position);
 
 protected: // publicµµ °¡´É
 	virtual void BeginPlay() override;

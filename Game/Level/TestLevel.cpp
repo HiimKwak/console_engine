@@ -2,14 +2,10 @@
 
 #include "TestLevel.h"
 #include "Actor/Player.h"
-
-/*
-* # = 벽
-* . = 바닥
-* p = 플레이어
-* b = box
-* t = 타겟
-*/
+#include "Actor/Wall.h"
+#include "Actor/Ground.h"
+#include "Actor/Box.h"
+#include "Actor/Target.h"
 
 TestLevel::TestLevel()
 {
@@ -47,8 +43,65 @@ void TestLevel::LoadMap(const char* filename)
 	// 데이터 읽기
 	size_t readSize = fread(data, sizeof(char), fileSize, file);
 
-	// Test: 읽어온 데이터 임시로 출력
-	std::cout << data;
+	// 읽어온 문자열 분석(parsing)해서 추력
+	int index = 0;
+
+	// 객체를 생성할 위치 값
+	Wanted::Vector2 position;
+
+	while (true)
+	{
+		if (index >= fileSize)
+		{
+			break;
+		}
+
+		// 캐릭터 읽기
+		char mapCharacter = data[index];
+		++index;
+
+		// 개행 문자 처리
+		if (mapCharacter == '\n') // text모드로 읽기 때문에 개행문자 정리된 상태로 읽을 수 있음
+		{
+			++position.y;
+			position.x = 0;
+			continue;
+		}
+
+		/*
+		* # = 벽
+		* . = 바닥
+		* p = 플레이어
+		* b = box
+		* t = 타겟
+		*/
+		switch (mapCharacter)
+		{
+		case '#':
+		case '1':
+			AddNewActor(new Wall(position));
+			break;
+		case '.':
+			AddNewActor(new Ground(position));
+			break;
+		case 'p':
+			AddNewActor(new Player(position));
+			// 플레이어 이동 후 이전 자리에 땅 생성
+			AddNewActor(new Ground(position));
+			break;
+		case 'b':
+			AddNewActor(new Box(position));
+			// 박스 이동 후 이전 자리에 땅 생성
+			AddNewActor(new Ground(position));
+			break;
+		case 't':
+			AddNewActor(new Target(position));
+			break;
+		}
+
+		// x좌표 증가 처리
+		++position.x;
+	}
 
 	delete[] data;
 
