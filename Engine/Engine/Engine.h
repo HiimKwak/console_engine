@@ -16,7 +16,7 @@ namespace  Wanted
 
 	public:
 		Engine();
-		~Engine();
+		virtual ~Engine(); // 자손 객체 소멸자도 누락안되고 실행됨
 
 		// game loop
 		void Run();
@@ -27,7 +27,7 @@ namespace  Wanted
 
 		static Engine& Get();
 
-	private:
+	protected:
 		// 정리 함수
 		void Shutdown()
 		{
@@ -47,7 +47,7 @@ namespace  Wanted
 		// draw/render
 		void Draw();
 
-	private:
+	protected:
 		// quit flag
 		bool isQuit = false;
 		// engine settings
