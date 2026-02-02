@@ -24,6 +24,13 @@ namespace Wanted
 			return false;
 		}
 
+		// 타입 문의
+		template<typename T>
+		bool IsTypeOf()
+		{
+			return Is(T::TypeIdClass());
+		}
+
 		template<typename T>
 		T* As()
 		{
