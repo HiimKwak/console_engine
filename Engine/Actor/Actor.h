@@ -35,9 +35,9 @@ namespace Wanted
 		inline Level* GetOwner() const { return owner; }
 
 		//getter
-		inline bool HasPlayBegun() const
+		inline bool HasBegunPlay() const
 		{
-			return hasPlayBegun;
+			return hasBegunPlay;
 		}
 		inline bool IsActive() const
 		{
@@ -52,7 +52,7 @@ namespace Wanted
 
 	protected:
 		// check whether begin play has been called
-		bool hasPlayBegun = false;
+		bool hasBegunPlay = false;
 
 		// active state
 		bool isActive = true;

@@ -26,7 +26,7 @@ namespace Wanted
 		// as actors may be spawned dynamically during gameplay.
 		for (Actor* actor : actors)
 		{
-			if (actor->HasPlayBegun())
+			if (actor->HasBegunPlay())
 			{
 				continue;
 			}
