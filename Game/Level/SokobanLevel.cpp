@@ -60,7 +60,9 @@ void SokobanLevel::LoadMap(const char* filename)
 	// 데이터 읽기
 	size_t readSize = fread(data, sizeof(char), fileSize, file);
 
-	// 읽어온 문자열 분석(parsing)해서 추력
+	/********************** 맵 그릴 data 채우기 **********************/
+
+	// 읽어온 문자열 분석(parsing)해서 출력
 	int index = 0;
 
 	// 객체를 생성할 위치 값
@@ -152,50 +154,49 @@ bool SokobanLevel::CanMove(const Wanted::Vector2& playerPosition, const Wanted::
 	}
 
 	// 경우의 수 처리
-	// 이동하려는 곳이 박스일 때
+	// nextPosition에 boxActor가 위치해있을 때 
 	if (boxActor)
 	{
-		// 두 위치 사이에서 이동 방향 구하기 (벡터의 뺄셈 활용)
-		// 이동 로직에서 두 벡터를 더한다는 것은 둘 중 하나는 위치이고 다른 하나는 벡터.
+		// 두 위치 사이에서 이동 방향 구하기(벡터의 뺄셈 활용), 이동 로직에서 두 벡터를 더한다는 것은 둘 중 하나는 위치이고 다른 하나는 벡터.
 		Vector2 direction = nextPosition - playerPosition;
 		Vector2 newPosition = boxActor->GetPosition() + direction;
 
-		for (Actor* const otherBox : boxes)
-		{
-			if (otherBox == boxActor)
-				continue;
+		//for (Actor* const otherBox : boxes)
+		//{
+		//	if (otherBox == boxActor)
+		//		continue;
 
-			if (otherBox->GetPosition() == newPosition)
-				return false;
-		}
+		//	if (newPosition == otherBox->GetPosition())
+		//		return false; // 플레이어가 박스를 밀었을 때의 newPosition에 박스가 있으면 cannot move
+		//}
 
 		for (Actor* const actor : actors)
 		{
-			if (actor->GetPosition() == newPosition)
+			if (newPosition == actor->GetPosition())
 			{
-				// #2. 벽이면 이동 불가
-				if (actor->IsTypeOf<Wall>())
+				if (actor->IsTypeOf<Wall>() || actor->IsTypeOf<Box>() || actor->IsTypeOf<Player>())
+				{
 					return false;
-			}
-			// #3. 그라운드 또는 타겟이면 이동 가능
-			if (actor->IsTypeOf<Ground>() || actor->IsTypeOf<Target>())
-			{
-				boxActor->SetPosition(newPosition);
+				}
+				if (actor->IsTypeOf<Ground>() || actor->IsTypeOf<Target>())
+				{
+					boxActor->SetPosition(newPosition);
 
-				// 점수 확인
-				isGameClear = CheckGameClear();
+					// 점수 확인
+					isGameClear = CheckGameClear();
 
-				return true;//이동가능
+					return true;
+				}
 			}
 		}
 	}
-	// 이동하려는 곳이 박스가 아닐 때
-	for (Actor* const actor : actors)
-	{
-		if (actor->GetPosition() == nextPosition)
+	else { // nextPosition에 boxActor가 없을 때
+		for (Actor* const actor : actors)
 		{
-			// 이동하려는 곳이 벽만 아니면 이동 가능
-			return actor->IsTypeOf<Wall>() ? false : true;
+			if (nextPosition == actor->GetPosition())
+			{
+				return actor->IsTypeOf<Wall>() ? false : true;
+			}
 		}
 	}
 

@@ -18,7 +18,7 @@ Game::Game()
 	state = State::GamePlay;
 
 	// 게임 시작 시 활성화할 레벨 결정
-	mainLevel = levels[State::GamePlay];
+	mainLevel = levels[static_cast<int>(State::GamePlay)];
 }
 
 Game::~Game()
@@ -43,12 +43,12 @@ void Game::ToggleMenu()
 
 	// 변경할 인덱스 계산
 	// 현재 활성 레벨 인덱스 토글
-	int stateIndex = (int)state;
+	int stateIndex = static_cast<int>(state);
 	int nextState = 1 - stateIndex; // 마법의 공식 1-x(OneMinus) - 림라이트 기초
-	state = (State)nextState;
+	state = static_cast<State>(nextState);
 
 	// 메인레벨 변경
-	mainLevel = levels[static_cast<int>(state)]
+	mainLevel = levels[static_cast<int>(state)];
 }
 
 Game& Game::Get()
