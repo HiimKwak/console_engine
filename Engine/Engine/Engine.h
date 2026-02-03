@@ -5,13 +5,20 @@
 
 namespace  Wanted
 {
+	// 싱글톤 관계없이 명시적 전방선언은 필수
 	class Input;
+	class Renderer;
+	class Level;
 
 	class WANTED_API Engine
 	{
 		struct EngineSettings
 		{
 			float frameRate = 0.0f;
+
+			// 화면 크기
+			int width = 0;
+			int height = 0;
 		};
 
 	public:
@@ -23,7 +30,7 @@ namespace  Wanted
 		void Quit();
 
 		// add new level
-		void SetNewLevel(class Level* newLevel);
+		void SetNewLevel(Level* newLevel);
 
 		static Engine& Get();
 
@@ -52,10 +59,12 @@ namespace  Wanted
 		bool isQuit = false;
 		// engine settings
 		EngineSettings settings;
+		// 렌더러 객체
+		Renderer* renderer = nullptr;
 		// input manager
 		Input* input = nullptr;
 		// main level
-		class Level* mainLevel = nullptr;
+		Level* mainLevel = nullptr;
 
 		static Engine* instance;
 	};

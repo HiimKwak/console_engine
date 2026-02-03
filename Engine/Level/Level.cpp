@@ -43,34 +43,11 @@ namespace Wanted
 	}
 	void Level::Draw()
 	{
-		for (Actor* actor : actors)
+		// 액터 순회하면서 Draw 호출
+		for (Actor* const actor : actors)
 		{
-			// 같은 위치에 다른 액터가 존재하는지 확인
-			Actor* search = nullptr;
-			for (Actor* otherActor : actors)
-			{
-				// 같은 액터면 패스
-				if (actor == otherActor)
-				{
-					continue;
-				}
-				// 위치비교
-				if (actor->GetPosition() == otherActor->GetPosition())
-				{
-					// 정렬 순서 비교.
-					if (actor->GetSortingOrder() < otherActor->GetSortingOrder())
-					{
-						search = otherActor;
-						break;
-					}
-				}
-			}
-
-			if (search)
-			{
-				continue;
-			}
-			actor->Draw();
+			if (actor->IsActive())
+				actor->Draw();
 		}
 	}
 	void Level::AddNewActor(Actor* newActor)

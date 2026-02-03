@@ -18,9 +18,9 @@ namespace Wanted
 
 	private: // 생성자를 감췄기 때문에 Engine 클래스 안에서만 생성가능하고, 나머지 범위에선 생성 자체가 막힌다
 		Input();
-		~Input();
 
 	public:
+		~Input(); // q. 소멸자를 악용할 가능성?
 		// input checker
 		bool GetKeyDown(int keyCode); // called when key pressed newly
 		bool GetKeyUp(int keyCode); // called when pressed key canceled 

@@ -13,7 +13,7 @@
 using namespace Wanted;
 
 Player::Player(const Vector2& position)
-	: super('P', position, Color::Red) // Actor()가 정답이나 RTTI Macro로 사용가능
+	: super("P", position, Color::Red) // Actor()가 정답이나 RTTI Macro로 사용가능
 {
 	sortingOrder = 10;
 }

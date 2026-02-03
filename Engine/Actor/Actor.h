@@ -15,7 +15,7 @@ namespace Wanted
 
 	public:
 		Actor(
-			const char image = ' ',
+			const char* image = " ",
 			const Vector2& position = Vector2::Zero,
 			Color color = Color::White
 		);
@@ -61,7 +61,7 @@ namespace Wanted
 		bool destroyRequested = false;
 
 		// 그려질 문자(이미지)
-		char image = ' ';
+		char* image = nullptr;
 
 		Color color = Color::White;
 

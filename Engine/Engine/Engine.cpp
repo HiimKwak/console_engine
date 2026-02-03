@@ -5,6 +5,7 @@
 #include "Level/Level.h"
 #include "Core/Input.h"
 #include "Util/Util.h"
+#include "Render/Renderer.h"
 
 namespace Wanted
 {
@@ -20,12 +21,15 @@ namespace Wanted
 		// 설정파일 로드
 		LoadSettings();
 
+		// 렌더러 객체 생성
+		renderer = new Renderer(Vector2(settings.width, settings.height));
+
 		// 커서 끄기
 		Util::TurnOffCursor();
 	}
 	Engine::~Engine()
 	{
-		if (mainLevel)
+		/*if (mainLevel)
 		{
 			delete mainLevel;
 			mainLevel = nullptr;
@@ -34,7 +38,10 @@ namespace Wanted
 		{
 			delete input;
 			input = nullptr;
-		}
+		}*/
+		SafeDelete(mainLevel);
+		SafeDelete(input);
+		SafeDelete(renderer);
 	}
 	void Engine::Run()
 	{
@@ -142,7 +149,34 @@ namespace Wanted
 
 		size_t readSize = fread(buffer, sizeof(char), 2048, file);
 
-		sscanf_s(buffer, "frameRate = %f", &settings.frameRate);
+		// 파싱
+		// 첫번째 문자열 분리할 때는 첫 파라미터 전달
+		char* context = nullptr;
+		char* token = nullptr;
+		token = strtok_s(buffer, "\n", &context);
+		// 반복해서 자르기
+		while (token)
+		{
+			// 설정 텍스트에서 파라미터 이름만 읽기
+			char header[10] = {};
+			// 문자열 읽기 함수 활용 // %s 포맷은 띄워쓰기 만나면 중단
+			sscanf_s(token, "%s", header, 10);
+			// 문자열 비교, 값 읽기
+			if (strcmp(header, "frameRate") == 0)
+			{
+				sscanf_s(token, "frameRate = %f", &settings.frameRate);
+			}
+			else if (strcmp(header, "width") == 0)
+			{
+				sscanf_s(token, "width = %d", &settings.width);
+			}
+			else if (strcmp(header, "height") == 0)
+			{
+				sscanf_s(token, "height = %d", &settings.height);
+			}
+			// 개행문자로 문자열 분리
+			token = strtok_s(nullptr, "\n", &context);
+		}
 
 		fclose(file);
 	}
@@ -179,7 +213,10 @@ namespace Wanted
 			return;
 		}
 
-		// 
+		// 레벨의 모든 액터가 렌더 데이터 제출(Submit)
 		mainLevel->Draw();
+
+		// 렌더러에 그리기 명령 전달
+		renderer->Draw();
 	}
 }
